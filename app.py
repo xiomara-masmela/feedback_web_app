@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, render_template
 import os
 import psycopg2
 
@@ -15,7 +15,7 @@ def index():
     cur = conn.cursor()
     cur.execute('SELECT 1', []) # Query to check that the DB connected
     conn.close()
-    return 'Hello, world Yang!'
+    return render_template('index.html')
 
 if __name__ == "__main__":
     app.run(debug=True)
