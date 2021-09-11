@@ -1,6 +1,7 @@
 {% extends "base.html" %} {% block content %}
 <!-- Full width column -->
 <!-- hero -->
+{{name}}
 <div class="container py-5">
     <div class="row flex-lg-row-reverse align-items-center g-5 py-5">
       <div class="col-10 col-sm-8 col-lg-6">
@@ -20,6 +21,19 @@
 <main class="container">
     <section class="home-project">
         projects
+        {{projects}}
+        {% for row in projects %}
+          <div class="project-single">
+            <img src="{{row['img_url']}}" />
+            <div class="project-information">
+              <h4>
+                  <a href="/project?project_id={{row['id']}}">
+                      {{row['title']}}
+                  </a>
+              </h4>
+          </div>
+          </div>
+        {% endfor %}
        </section>
 
 </main>

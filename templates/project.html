@@ -1,0 +1,20 @@
+{% extends "base.html" %} {% block content %}
+<!-- project section -->
+<main class="container">
+    <div class="row  justify-content-center ">
+        <div class="col-lg-2"></div>
+        <div class="col-lg-8 project-single">
+            {{name}}
+            <h1 class="text-center">{{result[1]}}</h1>
+            <img src="{{result[2]}}">
+            <p>{{result[3]}}</p>
+            <p>{{result[4]}}</p>
+        </div>
+        <div class="col-lg-2">
+        </div>
+    </div>
+   
+{{file}}
+</main>
+
+{% endblock content %}
