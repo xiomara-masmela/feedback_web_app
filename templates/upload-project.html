@@ -5,18 +5,18 @@
         <div class="col-lg-2"></div>
         <div class="col-lg-8">
             <h1 class="text-center">Create project</h1>
-            <form>
+            <form action="/upload-project-action" method="POST">
                 <div class="form-group">
                     <label for="title">Title</label>
-                    <input type="text" class="form-control" name="title" aria-describedby="emailHelp" placeholder="Enter email">
+                    <input type="text" class="form-control" name="title" placeholder="Enter Title" required>
                 </div>
                 <div class="form-group">
                     <label for="projectImage">Upload project image</label>
-                    <input type="file" class="form-control-file" id="projectImage">
+                    <input type="file" class="form-control-file" name="projectImage">
                 </div>
                 <div class="form-group">
                     <label for="projectdescription">Description</label>
-                    <textarea class="form-control" name="projectdescription" rows="10"></textarea>
+                    <textarea class="form-control" name="projectDescription" rows="10"></textarea>
                   </div>
                 <div class="form-group">
                     <label for="link">Link</label>
