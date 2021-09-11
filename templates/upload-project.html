@@ -1,0 +1,34 @@
+{% extends "base.html" %} {% block content %}
+<!-- project section -->
+<main class="container">
+    <div class="row  justify-content-center ">
+        <div class="col-lg-2"></div>
+        <div class="col-lg-8">
+            <h1 class="text-center">Create project</h1>
+            <form>
+                <div class="form-group">
+                    <label for="title">Title</label>
+                    <input type="text" class="form-control" name="title" aria-describedby="emailHelp" placeholder="Enter email">
+                </div>
+                <div class="form-group">
+                    <label for="projectImage">Upload project image</label>
+                    <input type="file" class="form-control-file" id="projectImage">
+                </div>
+                <div class="form-group">
+                    <label for="projectdescription">Description</label>
+                    <textarea class="form-control" name="projectdescription" rows="10"></textarea>
+                  </div>
+                <div class="form-group">
+                    <label for="link">Link</label>
+                    <input type="password" class="form-control" name="link" placeholder="Password">
+                </div>
+                <button type="submit" class="btn btn-primary">Create project</button>
+              </form>
+        </div>
+        <div class="col-lg-2"></div>
+    </div>
+   
+
+</main>
+
+{% endblock content %}

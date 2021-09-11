@@ -1,30 +1,27 @@
 {% extends "base.html" %} {% block content %}
-<div class="bg-white rounded shadow p-6 m-4 w-full lg:w-3/4 lg:max-w-lg">
-  <div class="mb-4">
-    <h1 class="text-grey-darkest">Flask Todo List</h1>
-    <div class="flex mt-4">
-      <input
-        class="shadow appearance-none border rounded w-full py-2 px-3 mr-4 text-grey-darker"
-        placeholder="Add Todo"
-      />
-      <button
-        class="flex-no-shrink p-2 border-2 rounded text-teal border-teal hover:text-white hover:bg-teal"
-      >
-        Add
-      </button>
+<!-- Full width column -->
+<!-- hero -->
+<div class="container py-5">
+    <div class="row flex-lg-row-reverse align-items-center g-5 py-5">
+      <div class="col-10 col-sm-8 col-lg-6">
+        <img src="bootstrap-themes.png" class="d-block mx-lg-auto img-fluid" alt="Bootstrap Themes" width="700" height="500" loading="lazy">
+      </div>
+      <div class="col-lg-6">
+        <h1 class="display-5 fw-bold lh-1 mb-3">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</h1>
+        <!-- <p class="lead">Quickly design and customize responsive mobile-first sites with Bootstrap, the world’s most popular front-end open source toolkit, featuring Sass variables and mixins, responsive grid system, extensive prebuilt components, and powerful JavaScript plugins.</p> -->
+        <div class="d-grid gap-2 d-md-flex justify-content-md-start">
+          <button type="button" class="btn btn-primary btn-lg px-4 me-md-2">Login</button>
+          <!-- <button type="button" class="btn btn-outline-secondary btn-lg px-4">Default</button> -->
+        </div>
+      </div>
     </div>
   </div>
-  <div>
-    <div class="flex mb-4 items-center">
-      <p class="w-full text-grey-darkest">
-        Add another component to Tailwind Components
-      </p>
-      <button
-        class="flex-no-shrink p-2 ml-2 border-2 rounded text-red border-red hover:text-white hover:bg-red"
-      >
-        Remove
-      </button>
-    </div>
-  </div>
-</div>
+<!-- project section -->
+<main class="container">
+    <section class="home-project">
+        projects
+       </section>
+
+</main>
+
 {% endblock content %}
