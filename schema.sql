@@ -9,9 +9,6 @@
         role TEXT
         );
 --Create user:
-INSERT INTO users(user_id, email, name, password_hash, avatar,role) 
-    VALUES (1, 'foo@example', 'image_url', 'This was my first project as a UX student', 'Design');
-
 --******* PROJECTS *******
 --create table projects
     CREATE TABLE projects (
@@ -22,6 +19,9 @@ INSERT INTO users(user_id, email, name, password_hash, avatar,role)
         category TEXT
         
         );
+--update table
+ALTER TABLE projects
+ADD user_id INTEGER;
 
 --Inser project
 INSERT INTO projects(project_id, title, image, description, category) 

@@ -9,7 +9,7 @@ def sql_select(query):
   conn.close()
   return results
 
-def sql_select_one(query, id):
+def sql_select_id(query, id):
   conn = psycopg2.connect("dbname=feedback_app")
   cur = conn.cursor()
   cur.execute(query,id)
@@ -17,6 +17,15 @@ def sql_select_one(query, id):
   cur.close()
   conn.close()
   return results
+
+def sql_select_user_project(query):
+  conn = psycopg2.connect("dbname=feedback_app")
+  cur = conn.cursor()
+  cur.execute(query,id)
+  user = cur.fetchone()
+  cur.close()
+  conn.close()
+  return user
 
 def sql_write(query, params):
   conn = psycopg2.connect("dbname=feedback_app")

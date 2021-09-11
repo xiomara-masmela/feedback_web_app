@@ -1,4 +1,4 @@
-from database import sql_write, sql_select, sql_select_one
+from database import sql_write, sql_select, sql_select_id
 
 def all_projects():
     results = sql_select('SELECT project_id, title, image, description, category from projects')
@@ -15,5 +15,5 @@ def all_projects():
     return total_projects
 
 def single_project():
-    result = sql_select_one()
+    result = sql_select_id()
     return result

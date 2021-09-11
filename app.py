@@ -10,7 +10,7 @@ from werkzeug.utils import secure_filename
 
 
 #local imports
-from database import sql_write, sql_select_one
+from database import sql_write, sql_select_id, sql_select_user_project
 from models.users import all_users
 from models.projects import all_projects
 
@@ -18,12 +18,9 @@ from models.projects import all_projects
 DB_URL = os.environ.get("DATABASE_URL", "dbname=feedback_app")
 SECRET_KEY = os.environ.get("SECRET_KEY", "pretend key for testing only")
 
-UPLOAD_FOLDER = './static/images'
-ALLOWED_EXTENSIONS = {'pdf', 'png', 'jpg', 'jpeg'}
-
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'Random string. Do not store keys in code!!'
-app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+
 
 #cloudinary
 CORS(app)
@@ -128,6 +125,7 @@ def uploadProject():
 
 @app.route('/upload-project-action' , methods = ['POST'])
 def uploadProjectAction() :
+    user_id = session.get('user_id')
     title = request.form.get('title')
     description = request.form.get('projectDescription')
     category = request.form.get('projectCategory')
@@ -152,8 +150,8 @@ def uploadProjectAction() :
     app.logger.info(upload_result)
     uploaded_img_url = upload_result["secure_url"]
     
-    sql_write('INSERT INTO projects(title, image, description, category) VALUES(%s, %s, %s, %s)',
-        [title, uploaded_img_url, description, category ])
+    sql_write('INSERT INTO projects(title, image, description, category, user_id) VALUES(%s, %s, %s, %s, %s)',
+        [title, uploaded_img_url, description, category, user_id ])
     return redirect('/')
 
   
@@ -162,13 +160,9 @@ def uploadProjectAction() :
 def projectSingle():
     name = session.get('name')
     project_id = request.args.get('project_id')
-    # conn = psycopg2.connect("dbname=feedback_app")
-    # cur = conn.cursor()
-    # cur.execute("SELECT * FROM projects WHERE project_id =(%s)", [id])
-    # results = cur.fetchone()
-    result = sql_select_one('SELECT * FROM projects WHERE project_id = %s', [project_id])
-    print(type(result))
-    return render_template('project.html', result = result)
+    result = sql_select_id('SELECT * FROM projects WHERE project_id = %s' , [project_id])
+    author = sql_select_user_project('SELECT name FROM users INNER JOIN projects ON users.user_id = projects.user_id')
+    return render_template('project.html', result = result, author = author)
 
 
 if __name__ == "__main__":

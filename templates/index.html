@@ -19,12 +19,10 @@
   </div>
 <!-- project section -->
 <main class="container">
-    <section class="home-project">
-        projects
-        {{projects}}
+    <section class="home-project d-flex justify-content-between">
         {% for row in projects %}
-          <div class="project-single">
-            <img src="{{row['img_url']}}" />
+          <div class="project-single col-lg-3 me-5">
+            <img class="project-thumbnail" src="{{row['img_url']}}" />
             <div class="project-information">
               <h4>
                   <a href="/project?project_id={{row['id']}}">
