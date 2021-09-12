@@ -31,14 +31,19 @@ CORS(app)
 def index():
     name = session.get('name')
     user_id = session.get('user_id')
+    avatar = session.get('avatar')
     projects = all_projects()
     
-    return render_template('index.html', name=name, user_id = user_id, projects= projects)
+    return render_template('index.html', name=name, user_id = user_id, projects= projects, avatar = avatar )
 
 # ***** Login *****
 @app.route('/login')
 def login():
-    return render_template('login.html')
+    name = session.get('name')
+    user_id = session.get('user_id')
+    avatar = session.get('avatar')
+    
+    return render_template('login.html', name = name, user_id = user_id, avatar=avatar)
 
 @app.route('/login_action', methods=['POST'])
 def loginAction():
@@ -55,16 +60,20 @@ def loginAction():
             session['email'] = username
             session['user_id'] = user['id']
             session['name'] = user['name']
+            session['avatar']= user['avatar']
             return redirect('/')
         else:
             error_message = 'Email address or password is incorrect'
-            return render_template('login.html', error_message = error_message, users = all_users())
+            return render_template('login.html', error_message = error_message)
     return " user not found"
 
 # ***** Signup *****
 @app.route('/signup')
 def signup():
-    return render_template('signup.html')
+    name = session.get('name')
+    user_id = session.get('user_id')
+    avatar = session.get('avatar')
+    return render_template('signup.html',name=name, user_id = user_id, avatar = avatar)
 
 @app.route('/signup-action', methods = ['POST'])
 def signupAction():
@@ -75,9 +84,29 @@ def signupAction():
     confirm_password = request.form.get('confirmpasswordsignup')
     password_hash = bcrypt.hashpw(password.encode(), bcrypt.gensalt()).decode()
 
+    #upload avatar
+    app.logger.info('in upload route')
+    cloudinary.config( 
+        cloud_name = "dtdhdix1f", 
+        api_key = "546218847156792", 
+        api_secret = "ects6SDSdPX94um0t3sIpp-uJgk" 
+    )
+    upload_result = None
+    if request.method == 'POST':
+        file_to_upload = request.files['avatar']
+        app.logger.info('%s file_to_upload', file_to_upload)
+    if file_to_upload:
+      upload_result = cloudinary.uploader.upload(
+          file_to_upload,
+          folder = "feedback-app/", 
+
+          )
+    app.logger.info(upload_result)
+    uploaded_img_url = upload_result["secure_url"]
+
     if password == confirm_password:
-        sql_write('INSERT INTO users(email, name, password_hash, role) VALUES(%s, %s, %s, %s)',
-        [email, name, password_hash, role ])
+        sql_write('INSERT INTO users(email, name, password_hash, avatar,role) VALUES(%s, %s, %s, %s, %s)',
+        [email, name, password_hash, uploaded_img_url, role ])
         return redirect('/login')
     else:
         return "Could not sign up"
@@ -121,7 +150,9 @@ def upload_file():
 def uploadProject():
     name = session.get('name')
     user_id = session.get('user_id')
-    return render_template('upload-project.html')
+    avatar = session.get('avatar')
+    
+    return render_template('upload-project.html', avatar = avatar)
 
 @app.route('/upload-project-action' , methods = ['POST'])
 def uploadProjectAction() :
@@ -159,10 +190,12 @@ def uploadProjectAction() :
 @app.route('/project')
 def projectSingle():
     name = session.get('name')
+    avatar = session.get('avatar')
     project_id = request.args.get('project_id')
     result = sql_select_id('SELECT * FROM projects WHERE project_id = %s' , [project_id])
     author = sql_select_user_project('SELECT name FROM users INNER JOIN projects ON users.user_id = projects.user_id')
-    return render_template('project.html', result = result, author = author)
+    author_avatar = sql_select_user_project('SELECT avatar FROM users INNER JOIN projects ON users.user_id = projects.user_id')
+    return render_template('project.html', result = result, author = author, author_avatar = author_avatar, avatar = avatar)
 
 
 if __name__ == "__main__":

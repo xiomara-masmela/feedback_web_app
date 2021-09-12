@@ -1,17 +1,20 @@
 <header class="p-3 mb-3 border-bottom">
     <div class="container">
       <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
-
         <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
           <li><a href="/home" class="nav-link px-2 link-secondary">Home</a></li>
-          <li><a href="/login" class="nav-link px-2 link-secondary">Login</a></li>
-          <li><a href="/signup" class="nav-link px-2 link-dark">Signup</a></li>
+          {% if  name != None %}
           <li><a href="/upload-project" class="nav-link px-2 link-dark">Upload project</a></li>
+          {% endif %}
         </ul>
         {% if  name != None %}
             <div class="dropdown text-end">
             <a href="#" class="d-block link-dark text-decoration-none dropdown-toggle" id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
-                <img src="https://github.com/mdo.png" alt="mdo" width="32" height="32" class="rounded-circle">
+              {% if  avatar %}
+                <img src="{{avatar}}" alt="avatar" width="32" height="32" class="rounded-circle">
+              {% else %}
+                <img src="https://res.cloudinary.com/dtdhdix1f/image/upload/v1631445744/feedback-app/avatar-icon-png-26_heaqy9.png" alt="avatar" width="32" height="32" class="rounded-circle">
+              {% endif %}
             </a>
             <ul class="dropdown-menu text-small" aria-labelledby="dropdownUser1">
                 <li><a class="dropdown-item" href="#">New project...</a></li>
@@ -22,7 +25,11 @@
             </ul>
             </div>
         {% else %}
-            <a href="/login">login</a>
+        <ul class="nav">
+          <li><a class="nav-link px-2 link-secondary" href="/login">Log in</a></li>  
+          <li><a href="/signup" class="nav-link px-2 link-dark">Signup</a></li>
+        </ul>
+        
 
         {% endif %}
       </div>
