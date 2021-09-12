@@ -189,13 +189,18 @@ def uploadProjectAction() :
 # ***** PROJECT *****
 @app.route('/project')
 def projectSingle():
+    #Current user - session
     name = session.get('name')
+    current_user_id = session.get('user_id')
     avatar = session.get('avatar')
+    #project information
     project_id = request.args.get('project_id')
+    #Get project, users(author) from db
     result = sql_select_id('SELECT * FROM projects WHERE project_id = %s' , [project_id])
     author = sql_select_user_project('SELECT name FROM users INNER JOIN projects ON users.user_id = projects.user_id')
     author_avatar = sql_select_user_project('SELECT avatar FROM users INNER JOIN projects ON users.user_id = projects.user_id')
-    return render_template('project.html', result = result, author = author, author_avatar = author_avatar, avatar = avatar)
+    
+    return render_template('project.html', result = result, author = author, author_avatar = author_avatar, avatar = avatar, name = name, current_user_id = current_user_id)
 
 
 if __name__ == "__main__":
