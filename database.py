@@ -1,7 +1,7 @@
 import psycopg2
 
 def sql_select(query):
-  conn = psycopg2.connect("dbname=feedback_app")
+  conn = psycopg2.connect("DB_URL")
   cur = conn.cursor()
   cur.execute(query)
   results = cur.fetchall()
