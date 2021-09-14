@@ -15,7 +15,7 @@ from models.users import all_users
 from models.projects import all_projects
 
 
-DB_URL = os.environ.get("DATABASE_URL", "dbname=feedback_app")
+DB_URL = os.environ.get("HEROKU_POSTGRESQL_TEAL_URL", "dbname=feedback_app")
 SECRET_KEY = os.environ.get("SECRET_KEY", "pretend key for testing only")
 
 app = Flask(__name__)

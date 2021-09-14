@@ -1,7 +1,7 @@
 import psycopg2
 import os
 
-DB_URL = os.environ.get("DATABASE_URL", "dbname=feedback_app")
+DB_URL = os.environ.get("HEROKU_POSTGRESQL_TEAL_URL", "dbname=feedback_app")
 
 
 def sql_select(query):
