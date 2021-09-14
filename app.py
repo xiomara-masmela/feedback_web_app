@@ -116,7 +116,7 @@ def signupAction():
 @app.route('/signout')
 def signout():
     session.clear()
-    return render_template('login.html')
+    return redirect('/')
   
 # ***** UPLOAD *****
 #upload images
@@ -160,6 +160,7 @@ def uploadProjectAction() :
     title = request.form.get('title')
     description = request.form.get('projectDescription')
     category = request.form.get('projectCategory')
+    link = request.form.get('link')
 
     #upload project image
     app.logger.info('in upload route')
@@ -181,8 +182,8 @@ def uploadProjectAction() :
     app.logger.info(upload_result)
     uploaded_img_url = upload_result["secure_url"]
     
-    sql_write('INSERT INTO projects(title, image, description, category, user_id) VALUES(%s, %s, %s, %s, %s)',
-        [title, uploaded_img_url, description, category, user_id ])
+    sql_write('INSERT INTO projects(title, image, description, category, project_link, user_id) VALUES(%s, %s, %s, %s, %s, %s)',
+        [title, uploaded_img_url, description, category, link, user_id ])
     return redirect('/')
 
   
@@ -205,9 +206,14 @@ def projectSingle():
 #Edit Project
 @app.route('/edit-project')
 def editProject():
+    #session
+    name = session.get('name')
+    current_user_id = session.get('user_id')
+    avatar = session.get('avatar')
+
     project_id = request.args.get('id')
-    project =sql_select_id("SELECT project_id, title, image, description, category FROM projects WHERE project_id =(%s)", [project_id])
-    return render_template('edit-project.html', project = project)
+    project =sql_select_id("SELECT project_id, title, image, description, category, project_link FROM projects WHERE project_id =(%s)", [project_id])
+    return render_template('edit-project.html', project = project, name=name, avatar=avatar, current_user_id = current_user_id)
 
 @app.route('/edit-project-action', methods=['POST'])
 def editProjectAction():

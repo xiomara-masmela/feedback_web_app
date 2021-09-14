@@ -16,12 +16,16 @@
         title TEXT,
         image TEXT,
         description TEXT,
-        category TEXT
+        category TEXT,
+        project_link TEXT,
+        user_id INTEGER, 
+        CONSTRAINT FK_projects_users FOREIGN KEY (user_id)
+            REFERENCES users(user_id)
         
         );
 --update table
-ALTER TABLE projects
-ADD user_id INTEGER;
+ALTER TABLE projects ADD user_id INTEGER;
+
 
 --Insert project
 INSERT INTO projects(project_id, title, image, description, category) 

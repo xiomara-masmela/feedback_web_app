@@ -1,18 +1,18 @@
-{% extends "base.html" %} {% block content %}
-<!-- project section -->
-{% if project %}
-    {{project}}
-{% endif %}
+{% extends "base.html" %} 
+<!-- body class -->
+{% block body_class %} edit-project-page {% if  name != None %}loggedin{% endif %}{% endblock body_class %}
+{% block content %}
 
-<main class="container">
+<!-- project section -->
+<main class="container mt-4">
     <div class="row  justify-content-center ">
         <div class="col-lg-2"></div>
         <div class="col-lg-8">
             <h1 class="text-center">Edit project</h1>
-            <section class="delete" method="POST">
+            <section class="delete d-flex flex-row-reverse">
                 <form action="/delete-project" method="POST">
                     <input type="hidden" name="id" value="{{project[0]}}">
-                    <input class="button secondary"  type="submit" value="Delete">
+                    <input class="btn btn-outline-danger"  type="submit" value="Delete Project">
                 </form>
             </section>
             <form action="/edit-project-action" method="POST" enctype="multipart/form-data">
@@ -33,13 +33,14 @@
                     <label for="projectdescription">Category</label>
                     <input type="text"class="form-control" name="projectCategory" value="{{project[4]}}" >
                   </div>
+
+
                 <div class="form-group">
                     <label for="link">Link</label>
-                    <input type="text" class="form-control" name="link" placeholder="Edit Link">
+                    <input type="text" class="form-control" name="link" placeholder="{{project[5]}}">
                 </div>
-                <button type="submit" class="btn btn-primary">Edit project</button>
+                <button type="submit" class="btn btn-primary mt-4">Edit project</button>
             </form>
-        
         </div>
         <div class="col-lg-2">
         </div>
@@ -47,5 +48,4 @@
    
 {{file}}
 </main>
-
 {% endblock content %}

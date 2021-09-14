@@ -8,7 +8,7 @@
           {% endif %}
         </ul>
         {% if  name != None %}
-            <div class="dropdown text-end">
+            <div class="d-flex text-end">
             <a href="#" class="d-block link-dark text-decoration-none dropdown-toggle" id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
               {% if  avatar %}
                 <img src="{{avatar}}" alt="avatar" width="32" height="32" class="rounded-circle">
@@ -16,11 +16,7 @@
                 <img src="https://res.cloudinary.com/dtdhdix1f/image/upload/v1631445744/feedback-app/avatar-icon-png-26_heaqy9.png" alt="avatar" width="32" height="32" class="rounded-circle">
               {% endif %}
             </a>
-            <ul class="dropdown-menu text-small" aria-labelledby="dropdownUser1">
-                <li><a class="dropdown-item" href="#">New project...</a></li>
-                <li><a class="dropdown-item" href="#">Settings</a></li>
-                <li><a class="dropdown-item" href="#">Profile</a></li>
-                <li><hr class="dropdown-divider"></li>
+            <ul class="nav">
                 <li><a class="dropdown-item" href="/signout">Sign out</a></li>
             </ul>
             </div>
@@ -29,8 +25,6 @@
           <li><a class="nav-link px-2 link-dark fw-bold" href="/login">Log in</a></li>  
           <li><a href="/signup" class="nav-link px-2 link-dark fw-bold">Signup</a></li>
         </ul>
-        
-
         {% endif %}
       </div>
     </div>

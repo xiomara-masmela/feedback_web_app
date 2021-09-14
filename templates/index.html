@@ -1,11 +1,6 @@
 {% extends "base.html" %} 
 <!-- body class -->
-{% block body_class %}
-home
-{% if  name != None %}
-loggedin
-{% endif %}
-{% endblock body_class %}
+{% block body_class %}home{% if  name != None %}loggedin{% endif %}{% endblock body_class %}
 {% block content %}
 <!-- Full width column -->
 <!-- hero -->
