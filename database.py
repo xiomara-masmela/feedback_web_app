@@ -1,5 +1,5 @@
 import psycopg2
-import app
+from app import DB_URL
 
 def sql_select(query):
   conn = psycopg2.connect("DB_URL")

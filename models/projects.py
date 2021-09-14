@@ -1,4 +1,4 @@
-from database import sql_write, sql_select, sql_select_id
+from database import sql_write, sql_select, sql_select_id, DB_URL
 
 def all_projects():
     results = sql_select('SELECT project_id, title, image, description, category from projects')
