@@ -19,7 +19,7 @@ DB_URL = os.environ.get("DATABASE_URL", "dbname=feedback_app")
 SECRET_KEY = os.environ.get("SECRET_KEY", "pretend key for testing only")
 
 app = Flask(__name__)
-app.config['SECRET_KEY'] = 'Random string. Do not store keys in code!!'
+app.config['SECRET_KEY'] = SECRET_KEY
 
 
 #cloudinary
