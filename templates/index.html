@@ -1,6 +1,6 @@
 {% extends "base.html" %} 
 <!-- body class -->
-{% block body_class %}home{% if  name != None %}loggedin{% endif %}{% endblock body_class %}
+{% block body_class %}home{% if  name != None %} loggedin{% endif %}{% endblock body_class %}
 {% block content %}
 <!-- Full width column -->
 <!-- hero -->
@@ -23,11 +23,12 @@
 {% endif %}
 <!-- project section -->
 <main class="container">
-    <section class="home-project d-flex">
+    <section class="home-project d-flex flex-wrap">
         {% for row in projects %}
-          <div class="project-single col-lg-4 me-5">
+          <div class="project-single col-lg-3 me-2 ">
             <img class="project-thumbnail" src="{{row['img_url']}}" />
             <div class="project-information">
+              <p class="category">{{row['category']}}</p>
               <h4 class="project-title">
                   <a href="/project?project_id={{row['id']}}">
                       {{row['title']}}

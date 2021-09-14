@@ -25,7 +25,7 @@ def sql_select_id(query, id):
 def sql_select_user_project(query):
   conn = psycopg2.connect(DB_URL)
   cur = conn.cursor()
-  cur.execute(query,id)
+  cur.execute(query)
   user = cur.fetchone()
   cur.close()
   conn.close()

@@ -6,6 +6,8 @@
     <div class="row  justify-content-center ">
         <div class="col-lg-2"></div>
         <div class="col-lg-8 project-single pt-3">
+            {{result[6]}}
+            {{current_user_id}}
             {% if  current_user_id  == result[6]  %}
             <div class="project-update">
                 <a href="/edit-project?id={{result[0]}}">Edit Project</a>
@@ -21,7 +23,9 @@
             </div>
             <img class="main-img mb-5" src="{{result[2]}}">
             <p class="mt-4 mb-4">{{result[3]}}</p>
-            <a href="{{result[5]}}" target="_blank">See Project</a>
+            {% if  result[5] %}
+                <a href="{{result[5]}}" target="_blank">See Project</a>
+            {% endif %}
         </div>
         <div class="col-lg-2">
         </div>

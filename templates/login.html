@@ -1,14 +1,16 @@
 {% extends "base.html" %} 
 {% block body_class %}log-in{% endblock body_class %}
 {% block content %}
-<!-- project section -->
+<!-- Content section -->
 <main class="container">
     <div class="row  justify-content-center ">
         <div class="col-lg-3"></div>
         <div class="col-lg-6 ">
             <h1 class="text-center">Login to your account </h1>
             <p class="text-center">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas luctus libero ut dui aliquet, dictum tincidunt nisl tempus. </p>
-            
+            {{userEmail}}
+            {{username}}
+            {{users}}
             {% if error_message %}
                 <div class="error">
                     <p>{{error_message}}</p>
@@ -17,7 +19,7 @@
             <form action="/login_action" method="POST">
                 <div class="form-group">
                   <label for="emailLogin">Email address</label>
-                  <input type="email" class="form-control" name="emailLogin" aria-describedby="emailHelp" placeholder="Enter email" required>
+                  <input type="email" class="form-control" name="emailLogin" placeholder="Enter email" required>
                   <small name="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
                 </div>
                 <div class="form-group">

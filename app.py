@@ -11,7 +11,7 @@ from werkzeug.utils import secure_filename
 
 #local imports
 from database import sql_write, sql_select_id, sql_select_user_project
-from models.users import all_users
+from models.users import get_all_users
 from models.projects import all_projects
 
 
@@ -52,10 +52,11 @@ def loginAction():
     password = request.form.get('passwordlogin')
     
     #db
-    users = all_users()
+    users = get_all_users()
     for user in users:  
         password_hash = user['password_hash']
         valid = bcrypt.checkpw(password.encode(), password_hash.encode())
+        userEmail = user['email']
         if user['email'] == username and valid == True:
             session['email'] = username
             session['user_id'] = user['id']
@@ -64,7 +65,7 @@ def loginAction():
             return redirect('/')
         else:
             error_message = 'Email address or password is incorrect'
-            return render_template('login.html', error_message = error_message)
+            return render_template('login.html', error_message = error_message, userEmail=userEmail, username=username, users = users)
     return " user not found"
 
 # ***** Signup *****
@@ -105,7 +106,7 @@ def signupAction():
     uploaded_img_url = upload_result["secure_url"]
 
     if password == confirm_password:
-        sql_write('INSERT INTO users(email, name, password_hash, avatar,role) VALUES(%s, %s, %s, %s, %s)',
+        sql_write('INSERT INTO users(email, name, password_hash, avatar, role) VALUES(%s, %s, %s, %s, %s)',
         [email, name, password_hash, uploaded_img_url, role ])
         return redirect('/login')
     else:
@@ -119,31 +120,7 @@ def signout():
     return redirect('/')
   
 # ***** UPLOAD *****
-#upload images
-@app.route('/upload-image', methods = ['POST'])
-def upload_file():
-  app.logger.info('in upload route')
-  cloudinary.config( 
-    cloud_name = "dtdhdix1f", 
-    api_key = "546218847156792", 
-    api_secret = "ects6SDSdPX94um0t3sIpp-uJgk" 
-    )
-  upload_result = None
-  if request.method == 'POST':
-    file_to_upload = request.files['projectImage']
-    app.logger.info('%s file_to_upload', file_to_upload)
-    if file_to_upload:
-      upload_result = cloudinary.uploader.upload(
-          file_to_upload,
-          folder = "feedback-app/", 
-
-          )
-      app.logger.info(upload_result)
-      uploade_img_url = upload_result["secure_url"]
-    #   uploaded_img_json = jsonify(upload_result)
-    return upload_result["secure_url"]
-
-   
+  
 
 # Create project
 @app.route('/upload-project')
@@ -198,6 +175,7 @@ def projectSingle():
     project_id = request.args.get('project_id')
     #Get project, users(author) from db
     result = sql_select_id('SELECT * FROM projects WHERE project_id = %s' , [project_id])
+    author_id = result[6]
     author = sql_select_user_project('SELECT name FROM users INNER JOIN projects ON users.user_id = projects.user_id')
     author_avatar = sql_select_user_project('SELECT avatar FROM users INNER JOIN projects ON users.user_id = projects.user_id')
     
