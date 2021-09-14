@@ -1,3 +1,35 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@100;400;600;700&display=swap');
+
+body {
+    font-family: 'Poppins', sans-serif;
+    color: #000;
+    position: relative;
+}
+a:not(.btn) {
+    color: inherit;
+    text-decoration: none !important;
+}
+h1 {
+    margin-bottom: 20px;
+}
+/* General customization */
+.link-dark {
+    color: #000;
+}
+.fw-bold {
+    font-weight: 600 !important;
+}
+
+.btn {
+    padding: 12px 35px !important;
+    border-radius: 2px;
+}
+
+.btn-primary {
+    color: #fff;
+    background-color: #000;
+    border-color: #000;
+}
 
 /* Projects Section */
 img.project-thumbnail {
@@ -5,4 +37,46 @@ img.project-thumbnail {
     height: 300px;
     object-fit: cover;
     border-radius: 4px;
+}
+
+/* Home page */
+
+.hero {
+    background-color: rgba(63, 3, 230, 0.2);
+    transition: background-color 2s ease-in;
+    height: 500px;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 98;
+}
+
+.home header {
+    margin-bottom: 0 !important;
+    border-bottom: none !important;
+    position: relative;
+    z-index: 99;
+}
+
+.home main.container {
+    margin-top: 500px;
+    padding-top: 50px;
+}
+.home.loggedin main.container {
+    margin-top: 0px;
+}
+
+.project-single > .project-information {
+    margin-top: 20px;
+}
+
+
+/* Project Single */
+.project-single {
+    overflow: hidden;
+}
+.project-single .main-img {
+    width: 100%;
+    height: 500px;
 }

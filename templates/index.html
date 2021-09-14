@@ -1,32 +1,39 @@
-{% extends "base.html" %} {% block content %}
+{% extends "base.html" %} 
+<!-- body class -->
+{% block body_class %}
+home
+{% if  name != None %}
+loggedin
+{% endif %}
+{% endblock body_class %}
+{% block content %}
 <!-- Full width column -->
 <!-- hero -->
-{{name}}
 {% if  name == None %}
-<div class="container py-5">
+<section class="hero wrapper d-flex align-items-center">
+  <div class="container py-5">
     <div class="row flex-lg-row-reverse align-items-center g-5 py-5">
-      <div class="col-10 col-sm-8 col-lg-6">
-        <img src="bootstrap-themes.png" class="d-block mx-lg-auto img-fluid" alt="Bootstrap Themes" width="700" height="500" loading="lazy">
-      </div>
-      <div class="col-lg-6">
-        <h1 class="display-5 fw-bold lh-1 mb-3">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</h1>
-        <!-- <p class="lead">Quickly design and customize responsive mobile-first sites with Bootstrap, the world’s most popular front-end open source toolkit, featuring Sass variables and mixins, responsive grid system, extensive prebuilt components, and powerful JavaScript plugins.</p> -->
-        <div class="d-grid gap-2 d-md-flex justify-content-md-start">
-          <button type="button" class="btn btn-primary btn-lg px-4 me-md-2">Login</button>
-          <!-- <button type="button" class="btn btn-outline-secondary btn-lg px-4">Default</button> -->
+      <div class="col-lg-2"></div>
+      <div class="col-lg-8">
+        <h1 class="display-5 fw-bold lh-1 mb-3 text-center">Share your feedback and help other students around the world </h1>
+        <div class="d-grid gap-2 d-md-flex justify-content-md-center">
+          <a href="/signup"type="button" class="btn btn-primary px-4 me-md-2">Signup</a>
         </div>
       </div>
+      <div class="col-lg-2"></div>
     </div>
   </div>
-  {% endif %}
+
+</section>
+{% endif %}
 <!-- project section -->
 <main class="container">
     <section class="home-project d-flex">
         {% for row in projects %}
-          <div class="project-single col-lg-3 me-5">
+          <div class="project-single col-lg-4 me-5">
             <img class="project-thumbnail" src="{{row['img_url']}}" />
             <div class="project-information">
-              <h4>
+              <h4 class="project-title">
                   <a href="/project?project_id={{row['id']}}">
                       {{row['title']}}
                   </a>

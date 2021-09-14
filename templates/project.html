@@ -1,24 +1,27 @@
-{% extends "base.html" %} {% block content %}
+{% extends "base.html" %} 
+{% block body_class %}project-page{% endblock body_class %}
+{% block content %}
 <!-- project section -->
 <main class="container">
     <div class="row  justify-content-center ">
         <div class="col-lg-2"></div>
         <div class="col-lg-8 project-single">
-            {{result}}
-            {{current_user_id}}
-            {{name}}
+            
             {% if  current_user_id  == result[5]  %}
             <div class="project-update">
                 <a href="/edit-project?id={{result[0]}}">Edit</a>
             </div>
             {% endif %}
+            <div class="page_title mt-2 mb-2">
+                <h1 class="text-center">{{result[1]}}</h1>
+                <p class="category">{{result[4]}}</p>
+            </div>
             
-            <h1 class="text-center">{{result[1]}}</h1>
-            <img src="{{result[2]}}">
+            <img class="main-img" src="{{result[2]}}">
             <h4><a>{{author[0]}}</a></h4>
             <img src="{{author_avatar}}">
             <p>{{result[3]}}</p>
-            <p>{{result[4]}}</p>
+            
             
         </div>
         <div class="col-lg-2">
