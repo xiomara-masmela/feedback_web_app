@@ -145,7 +145,7 @@ def upload_file():
 
    
 
-# upload project
+# Create project
 @app.route('/upload-project')
 def uploadProject():
     name = session.get('name')
@@ -202,6 +202,49 @@ def projectSingle():
     
     return render_template('project.html', result = result, author = author, author_avatar = author_avatar, avatar = avatar, name = name, current_user_id = current_user_id)
 
+#Edit Project
+@app.route('/edit-project')
+def editProject():
+    project_id = request.args.get('id')
+    project =sql_select_id("SELECT project_id, title, image, description, category FROM projects WHERE project_id =(%s)", [project_id])
+    return render_template('edit-project.html', project = project)
 
+@app.route('/edit-project-action', methods=['POST'])
+def editProjectAction():
+    project_id = request.form.get('projectId')
+    title = request.form.get('title')
+    image = request.form.get('projectImage')
+    description = request.form.get('projectDescription')
+    category = request.form.get('project Category')
+    link = request.form.get('link')
+
+    conn = psycopg2.connect(DB_URL)
+    cur = conn.cursor()
+    if title != '':
+        cur.execute('UPDATE projects SET title=(%s) WHERE project_id=(%s)',[title, project_id])
+    if image != '':
+        cur.execute('UPDATE projects SET image=(%s) WHERE project_id=(%s)',[image, project_id])
+    else:
+        upload_file()
+    if description != '':
+        cur.execute('UPDATE projects SET description=(%s) WHERE project_id=(%s)',[description, project_id])
+    if category != '':
+        cur.execute('UPDATE projects SET category =(%s) WHERE project_id=(%s)',[category, project_id])
+    if link != '':
+        cur.execute('UPDATE projects SET link=(%s) WHERE project_id=(%s)',[link, project_id])
+
+
+    conn.commit()
+    return redirect('/')
+
+@app.route('/delete-project', methods=['POST'])
+def deleteProject():
+    project_id = request.form.get('id')
+    conn = psycopg2.connect(DB_URL)
+    cur = conn.cursor()
+    cur.execute("DELETE FROM projects WHERE project_id =(%s)", [project_id])
+    conn.commit()
+
+    return redirect('/')
 if __name__ == "__main__":
     app.run(debug=True)

@@ -1,0 +1,51 @@
+{% extends "base.html" %} {% block content %}
+<!-- project section -->
+{% if project %}
+    {{project}}
+{% endif %}
+
+<main class="container">
+    <div class="row  justify-content-center ">
+        <div class="col-lg-2"></div>
+        <div class="col-lg-8">
+            <h1 class="text-center">Edit project</h1>
+            <section class="delete" method="POST">
+                <form action="/delete-project" method="POST">
+                    <input type="hidden" name="id" value="{{project[0]}}">
+                    <input class="button secondary"  type="submit" value="Delete">
+                </form>
+            </section>
+            <form action="/edit-project-action" method="POST" enctype="multipart/form-data">
+                <input type="hidden" name="projectId" value="{{project[0]}}">
+                <div class="form-group">
+                    <label for="title">Title</label>
+                    <input type="text" class="form-control" name="title" value="{{project[1]}}">
+                </div>
+                <div class="form-group">
+                    <label for="projectImage">Edit project image</label>
+                    <input type="file" class="form-control-file" name="projectImage" value="{{project[2]}}" >
+                </div>
+                <div class="form-group">
+                    <label for="projectdescription">Description</label>
+                    <textarea class="form-control" name="projectDescription" rows="10" >{{project[3]}}</textarea>
+                </div>
+                <div class="form-group">
+                    <label for="projectdescription">Category</label>
+                    <input type="text"class="form-control" name="projectCategory" value="{{project[4]}}" >
+                  </div>
+                <div class="form-group">
+                    <label for="link">Link</label>
+                    <input type="text" class="form-control" name="link" placeholder="Edit Link">
+                </div>
+                <button type="submit" class="btn btn-primary">Edit project</button>
+            </form>
+        
+        </div>
+        <div class="col-lg-2">
+        </div>
+    </div>
+   
+{{file}}
+</main>
+
+{% endblock content %}

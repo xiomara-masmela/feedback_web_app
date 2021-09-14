@@ -23,9 +23,12 @@
 ALTER TABLE projects
 ADD user_id INTEGER;
 
---Inser project
+--Insert project
 INSERT INTO projects(project_id, title, image, description, category) 
     VALUES (1, 'Food Truck App Design', 'image_url', 'This was my first project as a UX student', 'Design');
+
+--Update Project
+UPDATE projects SET title="This is edited" WHERE project_id = 5;
 
 --******* COMMENTS *******
 --create table comments

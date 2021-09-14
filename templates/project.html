@@ -9,10 +9,10 @@
             {{name}}
             {% if  current_user_id  == result[5]  %}
             <div class="project-update">
-                <a>Edit</a>
-                <a>Delete</a>
-            {% endif %}
+                <a href="/edit-project?id={{result[0]}}">Edit</a>
             </div>
+            {% endif %}
+            
             <h1 class="text-center">{{result[1]}}</h1>
             <img src="{{result[2]}}">
             <h4><a>{{author[0]}}</a></h4>

@@ -1,8 +1,11 @@
 import psycopg2
-from app import DB_URL
+import os
+
+DB_URL = os.environ.get("DATABASE_URL", "dbname=feedback_app")
+
 
 def sql_select(query):
-  conn = psycopg2.connect("DB_URL")
+  conn = psycopg2.connect(DB_URL)
   cur = conn.cursor()
   cur.execute(query)
   results = cur.fetchall()
@@ -11,7 +14,7 @@ def sql_select(query):
   return results
 
 def sql_select_id(query, id):
-  conn = psycopg2.connect("DB_URL")
+  conn = psycopg2.connect(DB_URL)
   cur = conn.cursor()
   cur.execute(query,id)
   results = cur.fetchone()
@@ -20,7 +23,7 @@ def sql_select_id(query, id):
   return results
 
 def sql_select_user_project(query):
-  conn = psycopg2.connect("DB_URL")
+  conn = psycopg2.connect(DB_URL)
   cur = conn.cursor()
   cur.execute(query,id)
   user = cur.fetchone()
@@ -29,8 +32,9 @@ def sql_select_user_project(query):
   return user
 
 def sql_write(query, params):
-  conn = psycopg2.connect("DB_URL")
+  conn = psycopg2.connect(DB_URL)
   cur = conn.cursor()
   cur.execute(query, params)
   conn.commit()
   conn.close()
+
