@@ -13,10 +13,10 @@ def sql_select(query):
   conn.close()
   return results
 
-def sql_select_id(query, id):
+def sql_select_id(query, params):
   conn = psycopg2.connect(DB_URL)
   cur = conn.cursor()
-  cur.execute(query,id)
+  cur.execute(query,params)
   results = cur.fetchone()
   cur.close()
   conn.close()
@@ -37,4 +37,13 @@ def sql_write(query, params):
   cur.execute(query, params)
   conn.commit()
   conn.close()
+
+
+def sql_delete(query,params):
+  conn = psycopg2.connect(DB_URL)
+  cur = conn.cursor()
+  cur.execute(query, params)
+  conn.commit()
+  conn.close()
+
 

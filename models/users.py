@@ -1,6 +1,6 @@
 from database import sql_write, sql_select, sql_select_id
 
-def get_all_users():
+def select_all_users():
     results = sql_select('SELECT user_id, email, name, password_hash, avatar, role FROM users')
     total_users = []
     for row in results:
@@ -15,6 +15,8 @@ def get_all_users():
         total_users.append(user)
     return total_users
 
-def single_user():
-    result = sql_select_id()
-    return result
+def create_new_user(email,name, password_hash, image, role):
+    query = sql_write('INSERT INTO users(email, name, password_hash, avatar, role) VALUES(%s, %s, %s, %s, %s)',
+        [email, name, password_hash, image, role ])
+    return query
+

@@ -5,17 +5,18 @@ import cloudinary
 import cloudinary.uploader
 import os
 import psycopg2
-import bcrypt
+
 from werkzeug.utils import secure_filename
 
 
 #local imports
 from database import sql_write, sql_select_id, sql_select_user_project
-from models.users import get_all_users
-from models.projects import all_projects
+from models.users import create_new_user, select_all_users
+from models.projects import select_project, edit_category, edit_link, edit_image, edit_description, edit_title, select_all_projects, delete_project_id
+from models.passwords import check_password, convert_secure_password
 
 
-DB_URL = os.environ.get("HEROKU_POSTGRESQL_TEAL_URL", "dbname=feedback_app")
+
 SECRET_KEY = os.environ.get("SECRET_KEY", "pretend key for testing only")
 
 app = Flask(__name__)
@@ -32,8 +33,7 @@ def index():
     name = session.get('name')
     user_id = session.get('user_id')
     avatar = session.get('avatar')
-    projects = all_projects()
-    
+    projects = select_all_projects()
     return render_template('index.html', name=name, user_id = user_id, projects= projects, avatar = avatar )
 
 # ***** Login *****
@@ -42,20 +42,17 @@ def login():
     name = session.get('name')
     user_id = session.get('user_id')
     avatar = session.get('avatar')
-    
     return render_template('login.html', name = name, user_id = user_id, avatar=avatar)
 
 @app.route('/login_action', methods=['POST'])
 def loginAction():
-    #form
     username = request.form.get('emailLogin')
     password = request.form.get('passwordlogin')
-    
-    #db
-    users = get_all_users()
+    password_hash = convert_secure_password(password)
+    users = select_all_users()
     for user in users:  
         password_hash = user['password_hash']
-        valid = bcrypt.checkpw(password.encode(), password_hash.encode())
+        valid = check_password(password, password_hash)
         userEmail = user['email']
         if user['email'] == username and valid == True:
             session['email'] = username
@@ -66,7 +63,7 @@ def loginAction():
         else:
             error_message = 'Email address or password is incorrect'
             return render_template('login.html', error_message = error_message, userEmail=userEmail, username=username, users = users)
-    return " user not found"
+    return render_template('login.html', error_message="User not found")
 
 # ***** Signup *****
 @app.route('/signup')
@@ -83,7 +80,8 @@ def signupAction():
     role = request.form.get('role')
     password = request.form.get('passwordsignup')
     confirm_password = request.form.get('confirmpasswordsignup')
-    password_hash = bcrypt.hashpw(password.encode(), bcrypt.gensalt()).decode()
+    
+    password_hash = convert_secure_password(password)
 
     #upload avatar
     app.logger.info('in upload route')
@@ -103,11 +101,10 @@ def signupAction():
 
           )
     app.logger.info(upload_result)
-    uploaded_img_url = upload_result["secure_url"]
+    image_url = upload_result["secure_url"]
 
     if password == confirm_password:
-        sql_write('INSERT INTO users(email, name, password_hash, avatar, role) VALUES(%s, %s, %s, %s, %s)',
-        [email, name, password_hash, uploaded_img_url, role ])
+        query = create_new_user(email,name, password_hash, image_url, role)
         return redirect('/login')
     else:
         return "Could not sign up"
@@ -188,9 +185,8 @@ def editProject():
     name = session.get('name')
     current_user_id = session.get('user_id')
     avatar = session.get('avatar')
-
     project_id = request.args.get('id')
-    project =sql_select_id("SELECT project_id, title, image, description, category, project_link FROM projects WHERE project_id =(%s)", [project_id])
+    project = select_project(project_id)
     return render_template('edit-project.html', project = project, name=name, avatar=avatar, current_user_id = current_user_id)
 
 @app.route('/edit-project-action', methods=['POST'])
@@ -201,33 +197,23 @@ def editProjectAction():
     description = request.form.get('projectDescription')
     category = request.form.get('project Category')
     link = request.form.get('link')
-
-    conn = psycopg2.connect(DB_URL)
-    cur = conn.cursor()
     if title != '':
-        cur.execute('UPDATE projects SET title=(%s) WHERE project_id=(%s)',[title, project_id])
+        query_update = edit_title(title, project_id)
     if image != '':
-        cur.execute('UPDATE projects SET image=(%s) WHERE project_id=(%s)',[image, project_id])
-    else:
-        upload_file()
+        query_update_image = edit_image(image, project_id)
     if description != '':
-        cur.execute('UPDATE projects SET description=(%s) WHERE project_id=(%s)',[description, project_id])
+        query_update_description = edit_description(description, project_id)
     if category != '':
-        cur.execute('UPDATE projects SET category =(%s) WHERE project_id=(%s)',[category, project_id])
+        query_update_category= edit_category(category, project_id)
     if link != '':
-        cur.execute('UPDATE projects SET link=(%s) WHERE project_id=(%s)',[link, project_id])
-
-
-    conn.commit()
+        query_update_link = edit_link(link, project_id)
     return redirect('/')
 
 @app.route('/delete-project', methods=['POST'])
 def deleteProject():
     project_id = request.form.get('id')
-    conn = psycopg2.connect(DB_URL)
-    cur = conn.cursor()
-    cur.execute("DELETE FROM projects WHERE project_id =(%s)", [project_id])
-    conn.commit()
+    query = delete_project_id(project_id)
+    print(query)
 
     return redirect('/')
 if __name__ == "__main__":
