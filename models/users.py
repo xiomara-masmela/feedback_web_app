@@ -1,5 +1,16 @@
 from database import sql_write, sql_select, sql_select_id
 
+# class User: 
+#     def __init__(self,id, email, name, password_hash, avatar, role):
+#         self.id=id
+#         self.name = name   
+#         self.email = email
+#         self.password = password_hash
+#         self.avatar = avatar,
+#         self.role = role
+
+
+    
 def select_all_users():
     results = sql_select('SELECT user_id, email, name, password_hash, avatar, role FROM users')
     total_users = []
@@ -15,8 +26,16 @@ def select_all_users():
         total_users.append(user)
     return total_users
 
-def create_new_user(email,name, password_hash, image, role):
-    query = sql_write('INSERT INTO users(email, name, password_hash, avatar, role) VALUES(%s, %s, %s, %s, %s)',
+def create_user(email,name, password_hash, image, role):
+    sql_write('INSERT INTO users(email, name, password_hash, avatar, role) VALUES(%s, %s, %s, %s, %s)',
         [email, name, password_hash, image, role ])
-    return query
+
+def select_user(user_id):
+    user = sql_select_id('SELECT * FROM users WHERE user_id =%s', [user_id])
+    return user
+
+def select_user_email(email):
+    user = sql_select_id('SELECT * FROM users WHERE email =%s', [email])
+    return user
+
 
