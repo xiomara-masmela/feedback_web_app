@@ -5,30 +5,63 @@
 <main class="container">
     <div class="row  justify-content-center ">
         <div class="col-lg-2"></div>
-        <div class="col-lg-8 project-single pt-3">
-            <div class="project-update">
-                <a href="/edit-project?id={{project[0]}}">Edit Project</a>
-            </div>
-            
-            <div class="page_title mt-2 mb-2">
-                <h1 class="text-center">{{project[1]}}</h1>
-                <p class="category">{{project[4]}}</p>
-            </div>
-            <div class="author-information d-flex mt-3 mb-3">
-                <h4 ><a class="mr-3">{{author[2]}}</a></h4>
-                <img class="rounded-circle" width="32" height="32"src="{{author[4]}}">
-            </div>
-            <img class="main-img mb-5" src="{{project[2]}}">
-            <p class="mt-4 mb-4">{{project[3]}}</p>
-            {% if  project[5] %}
-                <a href="{{project[5]}}" target="_blank">See Project</a>
-            {% endif %}
+        <div class="col-lg-8  pt-3">
+            <section class="project-single pb-5">
+                {% if  current_user_id == author[0]  %}
+                <div class="project-update">
+                    <a href="/edit-project?id={{project[0]}}">Edit Project</a>
+                </div>
+                {% endif %}
+                <div class="page_title mt-2 mb-2">
+                    <h1 class="text-center">{{project[1]}}</h1>
+                    <p class="category">{{project[4]}}</p>
+                </div>
+                <div class="author-information d-flex mt-3 mb-3">
+                    <h4 ><a class="mr-3">{{author[2]}}</a></h4>
+                    <img class="rounded-circle" width="32" height="32"src="{{author[4]}}">
+                </div>
+                <img width="856" height="500" class="main-img mb-5" src="{{project[2]}}">
+                <p class="mt-4 mb-4">{{project[3]}}</p>
+                {% if  project[5] %}
+                    <a href="{{project[5]}}" target="_blank">See Project</a>
+                {% endif %}
+            </section>
+            <section class="comments pt-5">
+                <h4>Post Feedback</h4>
+                <form action="/post-comment" method="POST">
+                    <div class="form-group">
+                    <div class="form-group">
+                        <label for="feedback">Feedback</label>
+                        <input type="hidden" value="{{project[0]}}" name="projectId">
+                        <textarea class="form-control" name="feedback" rows="4" ></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary mt-4">Submit</button>
+                  </form>
+                  {% if  comments %}
+                    <div class="feedback-content pt-5">
+                        <h4>Project Feedback</h4>
+                        {% for comment in comments %}
+                        <div class="comment">
+                            <p>{{content}}</p>
+                            
+                            <div class="comment-author">
+                                {% if  comment_author_avatar and comment_author_name %}
+                                    <img width="32" height="32" class="rounded-circle" src="{{comment_author_avatar}}">
+                                    <p>{{comment_author_name}}</p>
+                                {% endif %}
+                            </div>
+                            
+                        </div>
+                        {% endfor %}
+                      {% endif %}
+                      
+                  </div>
+
+            </section>
         </div>
         <div class="col-lg-2">
         </div>
     </div>
-   
-{{file}}
 </main>
 
 {% endblock content %}

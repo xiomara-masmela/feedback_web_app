@@ -26,6 +26,9 @@
 --update table
 ALTER TABLE projects ADD user_id INTEGER;
 
+--Table Comments
+
+
 
 --Insert project
 INSERT INTO projects( title, description, category, user_id) 
@@ -36,9 +39,12 @@ UPDATE projects SET title="This is edited" WHERE project_id = 5;
 
 --******* COMMENTS *******
 --create table comments
-    CREATE TABLE comments (
+        CREATE TABLE comments (
         comment_id SERIAL PRIMARY KEY,
-        user_id INTEGER,
-        project_id INTEGER
-        content TEXT
+        content TEXT,
+        project_id INTEGER,
+        user_id INTEGER, 
+        CONSTRAINT FK_comments_users FOREIGN KEY (user_id)
+            REFERENCES users(user_id)
+        
         );

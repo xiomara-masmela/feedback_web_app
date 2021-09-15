@@ -14,6 +14,7 @@ from database import sql_write, sql_select_id, sql_select_user_project
 from models.users import create_user, select_all_users, select_user, select_user_email
 from models.projects import create_new_project, select_project, edit_category, edit_link, edit_image, edit_description, edit_title, select_all_projects, delete_project_id
 from models.passwords import check_password, convert_secure_password
+from models.comments import select_comment, insert_comment
 
 
 
@@ -184,7 +185,16 @@ def projectSingle():
     project = select_project(project_id)
     author_id = project[6]
     author = select_user(author_id)
-    return render_template('project.html', project = project , author = author, avatar = avatar, name = name, current_user_id = current_user_id)
+    comments = select_comment(project_id)
+    content = comments[0]
+    if comments:
+        comment_author_id = comments[1]
+        comment_author = select_user(comment_author_id)
+        comment_author_name = comment_author[2]
+        comment_author_avatar = comment_author[4]
+        return render_template('project.html', project = project , author = author, avatar = avatar, name = name, current_user_id = current_user_id, comments = comments, comment_author_name = comment_author_name, comment_author_avatar= comment_author_avatar, content= content)
+    else:
+        return render_template('project.html', project = project , author = author, avatar = avatar, name = name, current_user_id = current_user_id)
 
 #Edit Project
 @app.route('/edit-project')
@@ -195,26 +205,49 @@ def editProject():
     avatar = session.get('avatar')
     project_id = request.args.get('id')
     project = select_project(project_id)
-    return render_template('edit-project.html', project = project, name=name, avatar=avatar, current_user_id = current_user_id)
+    author = project[6]
+
+  
+    return render_template('edit-project.html', project = project, name=name, avatar=avatar, current_user_id = current_user_id, author_id = author)
 
 @app.route('/edit-project-action', methods=['POST'])
 def editProjectAction():
     project_id = request.form.get('projectId')
     title = request.form.get('title')
-    image = request.form.get('projectImage')
+    
     description = request.form.get('projectDescription')
     category = request.form.get('projectCategory')
     link = request.form.get('link')
+
+      #Edit project image
+    app.logger.info('in upload route')
+    cloudinary.config( 
+        cloud_name = "dtdhdix1f", 
+        api_key = "546218847156792", 
+        api_secret = "ects6SDSdPX94um0t3sIpp-uJgk" 
+    )
+    upload_result = None
+    if request.method == 'POST':
+        file_to_upload = request.files['projectImage']
+        app.logger.info('%s file_to_upload', file_to_upload)
+    if file_to_upload:
+      upload_result = cloudinary.uploader.upload(
+          file_to_upload,
+          folder = "feedback-app/", 
+
+          )
+    app.logger.info(upload_result)
+    image = upload_result["secure_url"]
+    
+
     if title != '':
         query_update = edit_title(title, project_id)
-        print(query_update)
     if image != '':
         query_update_image = edit_image(image, project_id)
     if description != '':
         query_update_description = edit_description(description, project_id)
     if category != '':
         query_update_category= edit_category(category, project_id)
-        print(query_update_category)
     if link != '':
         query_update_link = edit_link(link, project_id)
     return redirect('/')
@@ -226,6 +259,17 @@ def deleteProject():
     print(query)
 
     return redirect('/')
+
+# Feedback - comments
+@app.route('/post-comment', methods=['POST'])
+def postComment():
+    content = request.form.get('feedback')
+    project_id = request.form.get('projectId')
+    user_id = session.get('user_id')
+    query = insert_comment(content, project_id, user_id)
+    print(query)
+    
+    return redirect(f'/project?project_id={project_id}')
 
 if __name__ == "__main__":
     app.run(debug=True)

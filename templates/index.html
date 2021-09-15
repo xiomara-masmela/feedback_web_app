@@ -23,10 +23,10 @@
 {% endif %}
 <!-- project section -->
 <main class="container">
-    <section class="home-project d-flex flex-wrap">
+    <section class="home-project d-flex ">
         {% for row in projects %}
           <div class="project-single col-lg-3 me-2 ">
-            <img class="project-thumbnail" src="{{row['image_url']}}" />
+            <img width="324" height="300" class="project-thumbnail" src="{{row['image_url']}}" />
             <div class="project-information">
               <p class="category">{{row['category']}}</p>
               <h4 class="project-title">
