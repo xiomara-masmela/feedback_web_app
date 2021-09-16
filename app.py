@@ -15,6 +15,7 @@ from models.users import create_user, select_all_users, select_user, select_user
 from models.projects import create_new_project, select_project, edit_category, edit_link, edit_image, edit_description, edit_title, select_all_projects, delete_project_id
 from models.passwords import check_password, convert_secure_password
 from models.comments import select_comment, insert_comment
+from models.uploads import cl_config
 
 
 
@@ -97,11 +98,12 @@ def signupAction():
 
     #upload avatar
     app.logger.info('in upload route')
-    cloudinary.config( 
-        cloud_name = "dtdhdix1f", 
-        api_key = "546218847156792", 
-        api_secret = "ects6SDSdPX94um0t3sIpp-uJgk" 
-    )
+    cl_config()
+    # cloudinary.config( 
+    #     cloud_name = "dtdhdix1f", 
+    #     api_key = "546218847156792", 
+    #     api_secret = "ects6SDSdPX94um0t3sIpp-uJgk" 
+    # )
     upload_result = None
     if request.method == 'POST':
         file_to_upload = request.files['avatar']
@@ -151,11 +153,7 @@ def createProjectAction() :
 
     #upload project image
     app.logger.info('in upload route')
-    cloudinary.config( 
-        cloud_name = "dtdhdix1f", 
-        api_key = "546218847156792", 
-        api_secret = "ects6SDSdPX94um0t3sIpp-uJgk" 
-    )
+    cl_config()
     upload_result = None
     if request.method == 'POST':
         file_to_upload = request.files['projectImage']
@@ -180,22 +178,15 @@ def projectSingle():
     name = session.get('name')
     current_user_id = session.get('user_id')
     avatar = session.get('avatar')
-    #project information
+    #Get project 
     project_id = request.args.get('project_id')
     project = select_project(project_id)
     author_id = project[6]
     author = select_user(author_id)
-    comments = select_comment(project_id)
-    content = comments[0]
-    if comments:
-        comment_author_id = comments[1]
-        comment_author = select_user(comment_author_id)
-        comment_author_name = comment_author[2]
-        comment_author_avatar = comment_author[4]
-        return render_template('project.html', project = project , author = author, avatar = avatar, name = name, current_user_id = current_user_id, comments = comments, comment_author_name = comment_author_name, comment_author_avatar= comment_author_avatar, content= content)
-    else:
-        return render_template('project.html', project = project , author = author, avatar = avatar, name = name, current_user_id = current_user_id)
-
+    #Get
+    comments = select_comment()
+    return render_template('project.html', project = project , author = author, avatar = avatar, name = name, current_user_id = current_user_id, comments = comments)
+   
 #Edit Project
 @app.route('/edit-project')
 def editProject():
@@ -214,30 +205,31 @@ def editProject():
 def editProjectAction():
     project_id = request.form.get('projectId')
     title = request.form.get('title')
-    
+    image = request.form.get('projectImage')
     description = request.form.get('projectDescription')
     category = request.form.get('projectCategory')
     link = request.form.get('link')
 
+    if image != '':
       #Edit project image
-    app.logger.info('in upload route')
-    cloudinary.config( 
-        cloud_name = "dtdhdix1f", 
-        api_key = "546218847156792", 
-        api_secret = "ects6SDSdPX94um0t3sIpp-uJgk" 
-    )
-    upload_result = None
-    if request.method == 'POST':
-        file_to_upload = request.files['projectImage']
-        app.logger.info('%s file_to_upload', file_to_upload)
-    if file_to_upload:
-      upload_result = cloudinary.uploader.upload(
-          file_to_upload,
-          folder = "feedback-app/", 
+        app.logger.info('in upload route')
+        cloudinary.config( 
+            cloud_name = "dtdhdix1f", 
+            api_key = "546218847156792", 
+            api_secret = "ects6SDSdPX94um0t3sIpp-uJgk" 
+        )
+        upload_result = None
+        if request.method == 'POST':
+            file_to_upload = request.files['projectImage']
+            app.logger.info('%s file_to_upload', file_to_upload)
+        if file_to_upload:
+            upload_result = cloudinary.uploader.upload(
+            file_to_upload,
+            folder = "feedback-app/", 
 
-          )
-    app.logger.info(upload_result)
-    image = upload_result["secure_url"]
+            )
+        app.logger.info(upload_result)
+        image = upload_result["secure_url"]
     
 
     if title != '':

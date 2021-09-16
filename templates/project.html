@@ -5,7 +5,7 @@
 <main class="container">
     <div class="row  justify-content-center ">
         <div class="col-lg-2"></div>
-        <div class="col-lg-8  pt-3">
+        <div class="colmd-12 col-lg-8  pt-3">
             <section class="project-single pb-5">
                 {% if  current_user_id == author[0]  %}
                 <div class="project-update">
@@ -27,6 +27,8 @@
                 {% endif %}
             </section>
             <section class="comments pt-5">
+                
+                {% if  name != None %}
                 <h4>Post Feedback</h4>
                 <form action="/post-comment" method="POST">
                     <div class="form-group">
@@ -37,26 +39,27 @@
                     </div>
                     <button type="submit" class="btn btn-primary mt-4">Submit</button>
                   </form>
+                  {% else %}
+                    <a class="pt-3" href="/login">Login to provide feedback</a>
+                  {% endif %}
+                  
                   {% if  comments %}
                     <div class="feedback-content pt-5">
                         <h4>Project Feedback</h4>
                         {% for comment in comments %}
                         <div class="comment">
-                            <p>{{content}}</p>
-                            
+                            <p>{{comment[2]}}</p>
                             <div class="comment-author">
-                                {% if  comment_author_avatar and comment_author_name %}
-                                    <img width="32" height="32" class="rounded-circle" src="{{comment_author_avatar}}">
-                                    <p>{{comment_author_name}}</p>
+                                {% if  comment[1] and comment[0]%}
+                                    <img width="32" height="32" class="rounded-circle" src="{{comment[1]}}">
+                                    <p>{{comment[0]}}</p>
                                 {% endif %}
                             </div>
                             
                         </div>
                         {% endfor %}
                       {% endif %}
-                      
                   </div>
-
             </section>
         </div>
         <div class="col-lg-2">

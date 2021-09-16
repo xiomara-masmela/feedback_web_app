@@ -25,7 +25,7 @@
 <main class="container">
     <section class="home-project d-flex ">
         {% for row in projects %}
-          <div class="project-single col-lg-3 me-2 ">
+          <div class="project-single col-md-6 col-lg-3 me-2 ">
             <img width="324" height="300" class="project-thumbnail" src="{{row['image_url']}}" />
             <div class="project-information">
               <p class="category">{{row['category']}}</p>

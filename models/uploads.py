@@ -3,6 +3,13 @@ import cloudinary.uploader
 from flask import request, jsonify
 from flask_cors import CORS, cross_origin
 
+def cl_config():
+  cloudinary.config( 
+    cloud_name = "dtdhdix1f", 
+    api_key = "546218847156792", 
+    api_secret = "ects6SDSdPX94um0t3sIpp-uJgk" 
+    )
+
 
 def upload_image(app):
   app.logger.info('in upload route')

@@ -31,8 +31,8 @@ ALTER TABLE projects ADD user_id INTEGER;
 
 
 --Insert project
-INSERT INTO projects( title, description, category, user_id) 
-    VALUES ('Test', '','Design', 4);
+INSERT INTO projects( title, image, description, category, user_id) 
+    VALUES ('Lorem ipsum', 'https://res.cloudinary.com/dtdhdix1f/image/upload/v1631784379/feedback-app/sbl1fgqoc1n1a0mkkvo8.jpg','Design', 9);
 
 --Update Project
 UPDATE projects SET title="This is edited" WHERE project_id = 5;

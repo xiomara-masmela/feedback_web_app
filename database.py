@@ -13,6 +13,15 @@ def sql_select(query):
   conn.close()
   return results
 
+def sql_select_all_id(query, params):
+  conn = psycopg2.connect(DB_URL)
+  cur = conn.cursor()
+  cur.execute(query,params)
+  results = cur.fetchall()
+  cur.close()
+  conn.close()
+  return results
+
 def sql_select_id(query, params):
   conn = psycopg2.connect(DB_URL)
   cur = conn.cursor()
