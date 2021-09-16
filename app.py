@@ -15,7 +15,7 @@ from models.users import create_user, select_all_users, select_user, select_user
 from models.projects import create_new_project, select_project, edit_category, edit_link, edit_image, edit_description, edit_title, select_all_projects, delete_project_id
 from models.passwords import check_password, convert_secure_password
 from models.comments import select_comment, insert_comment
-from models.uploads import cl_config
+# from models.uploads import cl_config
 
 
 
@@ -98,12 +98,11 @@ def signupAction():
 
     #upload avatar
     app.logger.info('in upload route')
-    cl_config()
-    # cloudinary.config( 
-    #     cloud_name = "dtdhdix1f", 
-    #     api_key = "546218847156792", 
-    #     api_secret = "ects6SDSdPX94um0t3sIpp-uJgk" 
-    # )
+    cloudinary.config( 
+        cloud_name = "dtdhdix1f", 
+        api_key = "546218847156792", 
+        api_secret = "ects6SDSdPX94um0t3sIpp-uJgk" 
+    )
     upload_result = None
     if request.method == 'POST':
         file_to_upload = request.files['avatar']
@@ -153,7 +152,11 @@ def createProjectAction() :
 
     #upload project image
     app.logger.info('in upload route')
-    cl_config()
+    cloudinary.config( 
+            cloud_name = "dtdhdix1f", 
+            api_key = "546218847156792", 
+            api_secret = "ects6SDSdPX94um0t3sIpp-uJgk" 
+        )
     upload_result = None
     if request.method == 'POST':
         file_to_upload = request.files['projectImage']
@@ -183,8 +186,8 @@ def projectSingle():
     project = select_project(project_id)
     author_id = project[6]
     author = select_user(author_id)
-    #Get
-    comments = select_comment()
+    #Get comments
+    comments = select_comment(project_id)
     return render_template('project.html', project = project , author = author, avatar = avatar, name = name, current_user_id = current_user_id, comments = comments)
    
 #Edit Project
@@ -197,8 +200,6 @@ def editProject():
     project_id = request.args.get('id')
     project = select_project(project_id)
     author = project[6]
-
-  
     return render_template('edit-project.html', project = project, name=name, avatar=avatar, current_user_id = current_user_id, author_id = author)
 
 @app.route('/edit-project-action', methods=['POST'])
@@ -210,8 +211,8 @@ def editProjectAction():
     category = request.form.get('projectCategory')
     link = request.form.get('link')
 
-    if image != '':
-      #Edit project image
+    if image != None:
+        #Edit project image
         app.logger.info('in upload route')
         cloudinary.config( 
             cloud_name = "dtdhdix1f", 
@@ -230,17 +231,19 @@ def editProjectAction():
             )
         app.logger.info(upload_result)
         image = upload_result["secure_url"]
+        print(f'imageis:',image)
     
 
-    if title != '':
+    if title:
         query_update = edit_title(title, project_id)
-    if image != '':
+    if image:
         query_update_image = edit_image(image, project_id)
-    if description != '':
+        print(query_update_image)
+    if description:
         query_update_description = edit_description(description, project_id)
-    if category != '':
+    if category:
         query_update_category= edit_category(category, project_id)
-    if link != '':
+    if link:
         query_update_link = edit_link(link, project_id)
     return redirect('/')
 
@@ -259,8 +262,6 @@ def postComment():
     project_id = request.form.get('projectId')
     user_id = session.get('user_id')
     query = insert_comment(content, project_id, user_id)
-    print(query)
-    
     return redirect(f'/project?project_id={project_id}')
 
 if __name__ == "__main__":
