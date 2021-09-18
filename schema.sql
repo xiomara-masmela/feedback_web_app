@@ -1,3 +1,9 @@
+--create Databse
+createdb feedback_app
+
+--connect with database
+psql feedback_app
+
 --******* USERS *******
 --create table users
     CREATE TABLE users (
@@ -25,9 +31,6 @@
         );
 --update table
 ALTER TABLE projects ADD user_id INTEGER;
-
---Table Comments
-
 
 
 --Insert project

@@ -94,8 +94,26 @@ body > main > section > div:nth-child(3) {
     margin-right: 0;
 }
 
+.home-project > .project-single {
+    width: 31%;
+    margin-right: 30px;
+}
+
 .project-single > .project-information {
     margin-top: 20px;
+}
+@media only screen and (max-width: 1361px)  {
+    .home-project > .project-single {
+        width: 45%;
+        margin-right: 30px;
+    }
+}
+@media only screen and (max-width: 768px)  {
+    .home-project > .project-single {
+        width: 100%;
+        margin-right: 0px;
+        margin-bottom: 40px;
+    }
 }
 .project-information {
     position: relative;
