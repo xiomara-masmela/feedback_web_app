@@ -212,39 +212,40 @@ def editProjectAction():
     category = request.form.get('projectCategory')
     link = request.form.get('link')
     
-    
-    #Edit project image
-    app.logger.info('in upload route')
-    cloudinary.config( 
-        cloud_name = "dtdhdix1f", 
-        api_key = "546218847156792", 
-        api_secret = "ects6SDSdPX94um0t3sIpp-uJgk" 
-    )
-    upload_result = None
-    if request.method == 'POST':
-        file_to_upload = request.files['projectImage']
-        app.logger.info('%s file_to_upload', file_to_upload)
-    if file_to_upload:
-        upload_result = cloudinary.uploader.upload(
-        file_to_upload,
-        folder = "feedback-app/", 
-
+    if request.form.get('projectImage') != None:
+        #Edit project image
+        app.logger.info('in upload route')
+        cloudinary.config( 
+            cloud_name = "dtdhdix1f", 
+            api_key = "546218847156792", 
+            api_secret = "ects6SDSdPX94um0t3sIpp-uJgk" 
         )
-    app.logger.info(upload_result)
-    image = upload_result["secure_url"]
-    print(f'imageis:',image)
-    
+        upload_result = None
+        if request.method == 'POST':
+            file_to_upload = request.files['projectImage']
+            app.logger.info('%s file_to_upload', file_to_upload)
+        if file_to_upload:
+            upload_result = cloudinary.uploader.upload(
+            file_to_upload,
+            folder = "feedback-app/", 
 
-    if title:
-        query_update = edit_title(title, project_id)
-    if image:
+            )
+        app.logger.info(upload_result)
+        image = upload_result["secure_url"]
+        print(f'imageis:',image)
+
         query_update_image = edit_image(image, project_id)
-        print(query_update_image)
-    if description:
+    
+    if title != '':
+        query_update = edit_title(title, project_id)
+    # if image != '':
+    #     query_update_image = edit_image(image, project_id)
+    #     print(query_update_image)
+    if description != '':
         query_update_description = edit_description(description, project_id)
-    if category:
+    if category != '':
         query_update_category= edit_category(category, project_id)
-    if link:
+    if link != '':
         query_update_link = edit_link(link, project_id)
     return redirect('/')
 
