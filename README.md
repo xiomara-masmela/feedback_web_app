@@ -24,3 +24,14 @@ Each user, once logged in will have the funcionality to upload, edit and delete 
 
 1. Everything :) 
 
+## Installing 
+
+1. Inside the project folder, create a virtual environment
+    `python -m venv venv`
+
+2. Activate virtual environment
+    `source venv/bin/activate`
+
+
+
+
