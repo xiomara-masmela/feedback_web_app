@@ -128,14 +128,14 @@ p.category {
     border-radius: 29px;
     background-color: #ffc2fd;
     text-align: center;
-    font-size: 10px;
+    font-size: 12px;
 }
 .page_title {
     position: relative;
 }
 .project-single .category {
     position: absolute;
-    right: -20px;
+    right: -11px;
     top: 0px;
 }
 

@@ -206,32 +206,32 @@ def editProject():
 def editProjectAction():
     project_id = request.form.get('projectId')
     title = request.form.get('title')
-    image = request.form.get('projectImage')
+    # image = request.form.get('projectImage')
     description = request.form.get('projectDescription')
     category = request.form.get('projectCategory')
     link = request.form.get('link')
+    
+    
+    #Edit project image
+    app.logger.info('in upload route')
+    cloudinary.config( 
+        cloud_name = "dtdhdix1f", 
+        api_key = "546218847156792", 
+        api_secret = "ects6SDSdPX94um0t3sIpp-uJgk" 
+    )
+    upload_result = None
+    if request.method == 'POST':
+        file_to_upload = request.files['projectImage']
+        app.logger.info('%s file_to_upload', file_to_upload)
+    if file_to_upload:
+        upload_result = cloudinary.uploader.upload(
+        file_to_upload,
+        folder = "feedback-app/", 
 
-    if image != None:
-        #Edit project image
-        app.logger.info('in upload route')
-        cloudinary.config( 
-            cloud_name = "dtdhdix1f", 
-            api_key = "546218847156792", 
-            api_secret = "ects6SDSdPX94um0t3sIpp-uJgk" 
         )
-        upload_result = None
-        if request.method == 'POST':
-            file_to_upload = request.files['projectImage']
-            app.logger.info('%s file_to_upload', file_to_upload)
-        if file_to_upload:
-            upload_result = cloudinary.uploader.upload(
-            file_to_upload,
-            folder = "feedback-app/", 
-
-            )
-        app.logger.info(upload_result)
-        image = upload_result["secure_url"]
-        print(f'imageis:',image)
+    app.logger.info(upload_result)
+    image = upload_result["secure_url"]
+    print(f'imageis:',image)
     
 
     if title:
@@ -251,8 +251,6 @@ def editProjectAction():
 def deleteProject():
     project_id = request.form.get('id')
     query = delete_project_id(project_id)
-    print(query)
-
     return redirect('/')
 
 # Feedback - comments
