@@ -7,6 +7,11 @@
         <div class="col-lg-3"></div>
         <div class="col-lg-6 ">
             <h1 class="text-center">Create an account</h1>
+            {% if error_message %}
+                <div class="error">
+                    <p>{{error_message}}</p>
+                </div>
+            {% endif %}
             <form action="/signup-action" method="POST" enctype="multipart/form-data">
                 <div class="form-group">
                     <label for="namesignup">Name</label>

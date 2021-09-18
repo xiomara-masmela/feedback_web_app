@@ -120,7 +120,8 @@ def signupAction():
         query = create_user(email,name, password_hash, image_url, role)
         return redirect('/login')
     else:
-        return "Could not sign up"
+        error_message = "Could not sign up"
+        return render_template("signup.html", error_message = error_message)
 
 
 # ***** signout *****
