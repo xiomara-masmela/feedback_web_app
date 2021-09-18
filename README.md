@@ -13,7 +13,7 @@ Each user, once logged in will have the funcionality to upload, edit and delete 
 ## Technologies
 1. HTML
 2. CSS
-3. Jinja
+3. Bootstrap
 4. Python - Flask
 5. JavaScript
 
